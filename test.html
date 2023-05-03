@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Box Plot</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <svg width="500" height="400"></svg>
+  <script>
+    d3.csv("https://raw.githubusercontent.com/NagashekarVanapalli/DV_project/main/Sleep_Efficiency.csv", function(data) {
+      console.log(data)
+      // var nested_data = d3.group(data, d => d.Gender);
+      
+      var bedtimes = [];
+      var nested_data = d3.group(Object.values(data), d => d.Gender);
+      nested_data.forEach(function(d){
+        bedtimes.push(d3.max(d[1], function(b){ return b.Bedtime; }));
+        bedtimes.push(d3.min(d[1], function(b){ return b.Bedtime; }));
+        bedtimes.push(d3.median(d[1], function(b){ return b.Bedtime; }));
+      });
+      console.log(nested_data)
+      var yScale = d3.scaleLinear().domain([d3.min(bedtimes), d3.max(bedtimes)]).range([400, 0]);
+      
+      var xScale = d3.scaleBand()
+        .domain(nested_data.keys())
+        .range([100, 400])
+        .paddingInner(0.1)
+        .paddingOuter(0.1);
+      
+      var yAxis = d3.axisLeft(yScale);
+      
+      var xAxis = d3.axisBottom(xScale);
+      
+      var svg = d3.select("svg");
+      
+      svg.selectAll("line")
+        .data(bedtimes)
+        .enter()
+        .append("line")
+        .attr("x1", 100)
+        .attr("x2", 400)
+        .attr("y1", function(d){ return yScale(d); })
+        .attr("y2", function(d){ return yScale(d); })
+        .style("stroke", "black")
+        .style("stroke-width", "10px");
+      
+      var boxes = svg.selectAll("rect")
+        .data(nested_data)
+        .enter()
+        .append("rect")
+        .attr("x", function(d){ return xScale(d[0]) - 30; })
+        .attr("y", function(d){ return yScale(d3.max(d[1], function(b){ return b.Bedtime; })); })
+        .attr("width", 60)
+        .attr("height", function(d){
+          var max = d3.max(d[1], function(b){ return b.Bedtime; });
+          var min = d3.min(d[1], function(b){ return b.Bedtime; });
+          return yScale(min) - yScale(max);
+        })
+        .attr("fill", "#69b3a2")
+        .attr("stroke", "black")
+        .attr("stroke-width", "1px");
+      
+      var medians = svg.selectAll("medianLine")
+        .data(nested_data)
+        .enter()
+        .append("line")
+        .attr("x1", function(d){ return xScale(d[0]) - 30; })
+        .attr("x2", function(d){ return xScale(d[0]) + 30; })
+        .attr("y1", function(d){ return yScale(d3.median(d[1], function(b){ return b.Bedtime; })); })
+        .attr("y2", function(d){ return yScale(d3.median(d[1], function(b){ return b.Bedtime; })); })
+        .attr("stroke", "black")
+        .style("stroke-width", "2px");
+    });
+    </script>
+    </body>
