@@ -1,0 +1,13 @@
+{
+	"male": [
+		{ "sleep_type": "REM_sleep_percentage", "count": "22.05"},
+		{ "sleep_type": "Deep_sleep_percentage", ", "count": "54"},
+		{ "sleep_type": "Light_sleep_percentage", "count": "23.95"}
+		
+	"female": [
+		{ "sleep_type": "REM_sleep_percentage", "count": "23.19"},
+		{ "sleep_type": "Deep_sleep_percentage", "count": "51.62"},
+		{ "sleep_type": "Light_sleep_percentage", "count": "25.19"}
+		
+	]
+}
