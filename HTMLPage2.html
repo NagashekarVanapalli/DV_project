@@ -3,11 +3,10 @@
 <head>
     <meta charset="utf-8">
 
-    <!-- External stylesheets-->
+
     <link rel="stylesheet" href="https://raw.githubusercontent.com/NagashekarVanapalli/DV_project/main/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://raw.githubusercontent.com/NagashekarVanapalli/DV_project/main/css/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="https://raw.githubusercontent.com/NagashekarVanapalli/DV_project/main/css/jquery-ui.structure.min.css">
-    <!-- Custom styling -->
     <style>
         #chart-area svg {
             margin: auto;
@@ -43,7 +42,6 @@
             text-align: center;
         }
 
-        /* Style northward tooltips differently */
         .d3-tip.n:after {
             margin: -1px 0 0 0;
             top: 100%;
@@ -52,22 +50,26 @@
     </style>
 </head>
 <body>
-    <h1>Sleep Efficiency</h1>
+    <h2>Sleep patterns by Gender</h2>
+    <br>
+    <p>Sleep patterns refer to the variations in the timing, duration, and quality of sleep that an individual experiences over a period of time. Sleep patterns can be influenced by a variety of factors such as age, lifestyle, work schedules, and medical conditions. There are different stages of sleep, including light sleep, deep sleep, and rapid eye movement (REM) sleep, and the amount of time spent in each stage can vary depending on the individual and other factors. Studying sleep patterns can help identify sleep disorders and develop strategies to improve sleep quality and overall health.</p>
+    <br>
     <div id="chart-area" style="margin-left: 24px; align-items: center; overflow: hidden; border: 2px solid black; background: ivory ">
-        <form style="margin-left: 0px; align-items: center; padding-right: 1000px; padding-top: 100px">
+        
+        <form style="margin-left: 0px; align-items: center; padding-right: 300px; padding-top: 200px">
             <label style="margin-left: 24px; align-items: center;"  name="dataset"><input type="radio"  value="male" checked> male</label>
             <label style="margin-left: 24px; align-items: first baseline;"><input type="radio"  name="dataset" value="female"> female</label>
         </form>
     </div>
 
-    <!-- External JS libraries -->
+    
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.min.js"></script>
     <script src="https://raw.githubusercontent.com/NagashekarVanapalli/DV_project/main/js/jquery.min.js"></script>
     <script src="https://raw.githubusercontent.com/NagashekarVanapalli/DV_project/main/js/jquery-ui.min.js"></script>
     <script src="https://raw.githubusercontent.com/NagashekarVanapalli/DV_project/main/js/bootstrap.min.js"></script>
 
-    <!-- Our JS code -->
+    
     <script>
         const tip = d3.tip()
             .attr('class', 'd3-tip')
@@ -114,15 +116,14 @@
                 .on("change", update);
 
             function update(value = this.value) {
-                // Join new data
                 const path = svg.selectAll("path")
                     .call(tip)
                     .data(pie(data[value]));
 
-                // Update existing arcs
+
                 path.transition().duration(200).attrTween("d", arcTween);
 
-                // Enter new arcs
+                
                 path.enter().append("path")
                     .attr("fill", (d, i) => color(i))
                     .attr("d", arc)
